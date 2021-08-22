@@ -85,7 +85,7 @@ test4 = list(range(1000, -1, -1))
 test5 = list(range(0, 1000))
 
 
-def x(elems): merge_sort(elems)
+def x(elems): return merge_sort(elems)
 
 
 print(x([]))
