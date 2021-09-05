@@ -61,25 +61,24 @@ def get_operation_windows(*, unit_factor=6):
     ]
 
 
-def get_bin_searcher(f, high_place_value=40):
-    '''limited to integers which results in imprecision past ~10^12'''
-    def calculator(period):
-        high = math.pow(10, high_place_value)
-        low = 0
-        while True:
-            mid = int((high + low)/2)
-
-            if abs(high - low) <= 1:
-                return round(mid)
-
-            if f(mid) > period:
-                high = mid
-            else:
-                low = mid
-    return calculator
-
-
 def build_binary_search_function(f):
+    def get_bin_searcher(f, high_place_value=40):
+        '''limited to integers which results in imprecision past ~10^12'''
+        def calculator(period):
+            high = math.pow(10, high_place_value)
+            low = 0
+            while True:
+                mid = int((high + low)/2)
+
+                if abs(high - low) <= 1:
+                    return round(mid)
+
+                if f(mid) > period:
+                    high = mid
+                else:
+                    low = mid
+        return calculator
+
     # extreme high-growth functions
     if f(10) > math.pow(10, 3):
         return get_bin_searcher(f, high_place_value=3)
@@ -114,9 +113,6 @@ n^1/2 => (10^6*c)^2 where c is 1 second, 60 seconds, 3600 seconds, etc.
 lg(n) => 2^(10^6*c) where c is 1 second, 60 seconds, 3600 seconds, etc.
 '''
 
-# 6 determines f(n) is reckoned in microseconds
-periods = get_operation_windows(unit_factor=6)
-print_header()
 
 fs = [
     lambda n: math.log2(n),
@@ -129,6 +125,10 @@ fs = [
     lambda n: math.factorial(n)
 ]
 
+# 6 determines f(n) is reckoned in microseconds
+periods = get_operation_windows(unit_factor=6)
+
+print_header()
 for f in fs:
     searcher = build_binary_search_function(f)
     for period in periods:
