@@ -1,46 +1,66 @@
-'''Implementation of finding the squareroot by bisection, with error'''
+'''Implementation of finding the nth-root by bisection, with error'''
 
 import math
 import unittest
 
 
-def square_root(value, error=10**-12):
+def n_root(value, error=10**-12, n=2):
     '''Time O(log(n)) Aux. Space O(1)'''
-    if value < 0:
+    if n % 2 == 0 and value < 0:
         raise ValueError('Complex numbers not supported')
 
-    high = value
-    low = 0
+    if value >= 0:
+        high = value
+        low = 0
+    else:
+        high = 0
+        low = value
     mid = (low + high) / 2
-    while abs(value - mid**2) > error:
-        if mid ** 2 > value:
+
+    while abs(value - mid**n) > error:
+        if mid ** n > value:
             high = mid
-        else:  # mid ** 2 < value:
+        else:  # mid ** n < value:
             low = mid
 
         mid = (low + high) / 2
     return mid
 
 
-class TestBisectionSquareRoot(unittest.TestCase):
+class TestBisectionRoots(unittest.TestCase):
     def test_square_root_square(self):
-        self.assertEqual(2.000, square_root(4))
+        self.assertEqual(2.000, n_root(4))
 
     def test_square_root_non_square(self):
         self.assertEqual(
             round(math.sqrt(3), 7),
-            round(square_root(3), 7)
+            round(n_root(3), 7)
         )
 
     def test_square_root_non_square_more_precision(self):
         self.assertEqual(
             round(math.sqrt(11), 10),
-            round(square_root(11), 10)
+            round(n_root(11), 10)
         )
 
     def test_square_root_zero(self):
-        self.assertEqual(0, square_root(0))
+        self.assertEqual(0, n_root(0))
 
     def test_square_root_negative(self):
         with self.assertRaises(ValueError):
-            square_root(-1)
+            n_root(-1)
+
+    def test_cube_root_negative_cube(self):
+        self.assertEqual(-1, round(n_root(-1, n=3), 1))
+
+    def test_cube_root_negative_noncube(self):
+        self.assertEqual(
+            round((-11**(1/3)), 10),
+            round(n_root(-11, n=3), 10)
+        )
+
+    def test_fifth_root_negative(self):
+        self.assertEqual(
+            round((-11**(1/5)), 10),
+            round(n_root(-11, n=5), 10)
+        )
