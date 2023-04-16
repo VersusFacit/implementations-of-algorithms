@@ -1,0 +1,13 @@
+[package]
+name = "zimplementations-of-algorithms"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.8.4"
+microbench = "0.5.0"
+[[bin]]
+name = "1-1_r_binary_search"
+path = "src/bin/1-1-reading/binary-search.rs"
