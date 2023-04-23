@@ -11,3 +11,6 @@ microbench = "0.5.0"
 [[bin]]
 name = "1-1_r_binary_search"
 path = "src/bin/1-1-reading/binary-search.rs"
+[[bin]]
+name = "1-1_r_lil_array"
+path = "src/bin/1-1-reading/lil_array_lib.rs"
